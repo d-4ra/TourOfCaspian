@@ -19,7 +19,11 @@
       </div>
       <div class="input-group mb-3">
         <span class="input-group-text">Flavor</span>
-        <input class="form-control" name="dish-flavor" [(ngModel)]="dish.flavor" placeholder="Dish flavor" #asdblock/>
+        <input class="form-control" name="dish-flavor" [(ngModel)]="dish.flavor" placeholder="Dish flavor"/>
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">Recipe URL</span>
+        <input class="form-control" name="dish-recipeURL" [(ngModel)]="dish.recipeURL" placeholder="URL..."/>
       </div>
       <button class="btn btn-primary btn-md" type="button" #cmdSave (click)="save(); toggleDynamicClass()">save</button>
     </div>
