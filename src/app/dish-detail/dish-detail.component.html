@@ -10,16 +10,16 @@
     <div *ngIf="editMode">
       <div class="input-group mb-3">
         <span class="input-group-text">Name</span>
-        <input type="text" class="form-control" name="dish-name" [(ngModel)]="dish.name" placeholder="Dish name"/>
+        <input type="text" class="form-control" name="dish-name" [(ngModel)]="dish.name" (input)="toggleDynamicClass()" placeholder="Dish name"/>
         <span class="input-group-text">Color</span>
         <input class="form-control" name="dish-color" [(ngModel)]="dish.color" placeholder="Dish color"/>
       </div>
       <div class="input-group mb-3">
         <span class="input-group-text">Flavor</span>
-        <input class="form-control" name="dish-flavor" [(ngModel)]="dish.flavor" placeholder="Dish flavor" #asdblock/>
+        <input class="form-control" name="dish-flavor" [(ngModel)]="dish.flavor" placeholder="Dish flavor"/>
       </div>
-      <button class="btn btn-primary btn-md" type="button" #cmdSave (click)="save(); toggleDynamicClass()">save</button>
     </div>
     <button class="btn btn-dark btn-lg" type="button" (click)="goBack()">Back</button>
-    <button class="btn btn-dark btn-lg" type="button" (click)="edit(); toggleDynamicClass()" id="editButton">Edit Mode</button>
+    <button *ngIf="!editMode" class="btn btn-dark btn-lg" type="button" (click)="edit()">Edit Mode</button>
+    <button *ngIf="editMode" class="btn btn-primary btn-lg" type="button" id="saveButton" (click)="save()">save</button>
   </div>
