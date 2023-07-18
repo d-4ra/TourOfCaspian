@@ -1,0 +1,16 @@
+<div class="d-flex justify-content-center" id="search-component">
+    <label class="h3 m-3" for="search-box">Dish Search</label>
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text">Search</span>
+    <input type="text" class="form-control" placeholder="Dish..." #searchBox id="search-box" (input)="search(searchBox.value)" />
+</div>
+<div>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let dish of dishes$ | async" >
+      <a routerLink="/detail/{{dish.id}}">
+        {{dish.name}}
+      </a>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,25 @@
+<div *ngIf="dish">
+    <h2 class="d-flex justify-content-center">~~~{{dish.name | uppercase}}~~~</h2>
+    <div>
+      <span class="h2 text-danger d-flex justify-content-center">{{dish.color}}</span>
+      <span class="h2 d-flex justify-content-center">{{dish.flavor}}</span>
+      <div class="d-flex justify-content-center py-3">
+        <img class="rounded img-fluid" height="500" width="500" src="{{dish.img}}">
+      </div>
+    </div>
+    <div *ngIf="editMode">
+      <div class="input-group mb-3">
+        <span class="input-group-text">Name</span>
+        <input type="text" class="form-control" name="dish-name" [(ngModel)]="dish.name" placeholder="Dish name"/>
+        <span class="input-group-text">Color</span>
+        <input class="form-control" name="dish-color" [(ngModel)]="dish.color" placeholder="Dish color"/>
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">Flavor</span>
+        <input class="form-control" name="dish-flavor" [(ngModel)]="dish.flavor" placeholder="Dish flavor" #asdblock/>
+      </div>
+      <button class="btn btn-primary btn-md" type="button" #cmdSave (click)="save(); toggleDynamicClass()">save</button>
+    </div>
+    <button class="btn btn-dark btn-lg" type="button" (click)="goBack()">Back</button>
+    <button class="btn btn-dark btn-lg" type="button" (click)="edit(); toggleDynamicClass()" id="editButton">Edit Mode</button>
+  </div>

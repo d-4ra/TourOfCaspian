@@ -1,0 +1,14 @@
+<div class="d-flex justify-content-center">
+  <nav>
+    <a routerLink="/dashboard" class="btn btn-lg btn-secondary">Dashboard</a>
+  </nav>
+  <div class="mx-3">
+    <h1 class="shadow-lg p-3 mb-4 bg-white rounded">{{title}}</h1>
+  </div>
+  <nav>
+    <a routerLink="/dishes" class="btn btn-lg btn-secondary">Dishes</a>
+  </nav>
+</div>
+
+<router-outlet></router-outlet>
+<app-messages></app-messages>
