@@ -4,4 +4,5 @@ export interface Dish {
     color: string;
     flavor: string;
     img: string;
+    recipeURL: string;
 }

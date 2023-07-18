@@ -7,8 +7,12 @@
 
 <div class="input-group mb-3" *ngIf="searchBox.value.length > 0">
   <span class="input-group-text">Optional</span>
-    <input type="text" class="form-control" placeholder="Color..." id="colorBox">
-    <input type="text" class="form-control" placeholder="Flavor..." id="flavorBox">
+  <input type="text" class="form-control" placeholder="Color..." id="colorBox">
+  <input type="text" class="form-control" placeholder="Flavor..." id="flavorBox">
+</div>
+<div class="input-group mb-3" *ngIf="searchBox.value.length > 0">
+  <span class="input-group-text">Optional</span>
+  <input type="text" class="form-control" placeholder="Recipe URL..." id="recipeBox">
 </div>
 
 <ul class="list-group-flush">

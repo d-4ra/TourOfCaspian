@@ -22,16 +22,21 @@ export class DishesComponent implements OnInit {
     .subscribe(dishes => this.dishes = dishes);
   }
   add(name: string): void {
-    let color: string
-    let flavor: string
+    let color: string;
+    let flavor: string;
+    let recipeURL: string;
     const colorBoxElement = document.getElementById("colorBox") as HTMLInputElement;
     const flavorBoxElement = document.getElementById("flavorBox") as HTMLInputElement;
+    const recipeBoxElement = document.getElementById("recipeBox") as HTMLInputElement;
     color = colorBoxElement.value;
     flavor = flavorBoxElement.value;
+    recipeURL = recipeBoxElement.value;
 
     name = name.trim();
     color = color.trim();
     flavor.trim();
+    recipeURL.trim();
+
     if (!name) { return; }
     this.dishService.addDish({ name, color, flavor } as Dish)
       .subscribe(dish => {
