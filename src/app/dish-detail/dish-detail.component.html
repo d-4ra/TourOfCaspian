@@ -12,14 +12,14 @@
         <span class="input-group-text">Name</span>
         <input type="text" class="form-control" name="dish-name" [(ngModel)]="dish.name" (input)="toggleDynamicClass()" placeholder="Dish name"/>
         <span class="input-group-text">Color</span>
-        <input class="form-control" name="dish-color" [(ngModel)]="dish.color" placeholder="Dish color"/>
+        <input class="form-control" name="dish-color" [(ngModel)]="dish.color" (input)="toggleDynamicClass()" placeholder="Dish color"/>
       </div>
       <div class="input-group mb-3">
         <span class="input-group-text">Flavor</span>
-        <input class="form-control" name="dish-flavor" [(ngModel)]="dish.flavor" placeholder="Dish flavor"/>
+        <input class="form-control" name="dish-flavor" [(ngModel)]="dish.flavor" (input)="toggleDynamicClass()" placeholder="Dish flavor"/>
       </div>
     </div>
     <button class="btn btn-dark btn-lg" type="button" (click)="goBack()">Back</button>
     <button *ngIf="!editMode" class="btn btn-dark btn-lg" type="button" (click)="edit()">Edit Mode</button>
-    <button *ngIf="editMode" class="btn btn-primary btn-lg" type="button" id="saveButton" (click)="save()">save</button>
+    <button *ngIf="editMode" [ngClass]="isWarningClass ? 'btn btn-warning btn-lg' : 'btn btn-primary btn-lg'" type="button" (click)="save(); toggleDynamicClass()">save</button>
   </div>
