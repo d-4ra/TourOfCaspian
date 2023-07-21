@@ -23,6 +23,14 @@ export class DishService {
         catchError(this.handleError<Dish[]>('getDishes', []))
       );
   }
+  getDishesRatingOrder(): Observable<Dish[]> {
+    return this.http.get<Dish[]>(this.dishesUrl).pipe(
+      map((dishes: Dish[]) => {
+        dishes.sort((a, b) => b.rating - a.rating);
+        return dishes;
+      })
+    );
+  }
 
   /** GET hero by id. Will 404 if id not found */
   getDish(id: number): Observable<Dish> {
