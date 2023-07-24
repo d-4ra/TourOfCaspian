@@ -18,8 +18,15 @@
         <span class="input-group-text">Flavor</span>
         <input class="form-control" name="dish-flavor" [(ngModel)]="dish.flavor" placeholder="Dish flavor" #asdblock/>
       </div>
-      <button class="btn btn-primary btn-md" type="button" #cmdSave (click)="save(); toggleDynamicClass()">save</button>
+      <button class="btn btn-primary btn-md" type="button" (click)="save(true); toggleDynamicClass()">save</button>
     </div>
     <button class="btn btn-dark btn-lg" type="button" (click)="goBack()">Back</button>
     <button class="btn btn-dark btn-lg" type="button" (click)="edit(); toggleDynamicClass()" id="editButton">Edit Mode</button>
+    <button type="button" class="btn btn-success btn-sm" (click)="upvoteIt()">
+      <img src="../assets/upvote.png" width="20" height="20">
+    </button>
+    <button type="button" class="btn btn-danger btn-sm" (click)="downvoteIt()">
+      <img src="../assets/downvote.png" width="20" height="20">
+    </button>
+    <label>Ratings: {{dish.rating}}</label>
   </div>
