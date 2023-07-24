@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 
 import { Dish } from '../dish';
 import { DishService } from '../dish.service';
+import { NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-dish-detail',
@@ -31,10 +32,14 @@ export class DishDetailComponent implements OnInit {
       .subscribe(dish => this.dish = dish);
   }
 
-  save(): void {
+  save(subscribeBool: boolean): void {
     if (this.dish) {
-      this.dishService.updateDish(this.dish)
+      if(subscribeBool) {
+        this.dishService.updateDish(this.dish)
         .subscribe(() => {this.edit(); this.isWarningClass = false});
+      } else{
+        this.dishService.updateDish(this.dish).subscribe(() => console.log("Updated <false>"));
+      }
     }
   }
 
@@ -55,5 +60,17 @@ export class DishDetailComponent implements OnInit {
     // if(cmdSaveElement.className == "btn btn-primary btn-lg") 
     // { dynamicClass = "btn btn-warning btn-lg" } else { dynamicClass = "btn btn-primary btn-lg"}
     // if(dynamicClass == "btn btn-warning btn-lg") { cmdSaveElement.className = dynamicClass; }
+  }
+
+  upvoteIt(){
+    if(this.dish)
+    this.dish.rating += 1;
+    this.save(false);
+  }
+
+  downvoteIt(){
+    if(this.dish && this.dish.rating != 0)
+    this.dish.rating -= 1;
+    this.save(false);
   }
 }

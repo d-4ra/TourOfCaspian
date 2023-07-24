@@ -21,5 +21,12 @@
     </div>
     <button class="btn btn-dark btn-lg" type="button" (click)="goBack()">Back</button>
     <button *ngIf="!editMode" class="btn btn-dark btn-lg" type="button" (click)="edit()">Edit Mode</button>
-    <button *ngIf="editMode" class="btn btn-lg" [ngClass]="isWarningClass ? 'btn-warning' : 'btn-primary'" type="button" (click)="save(); toggleDynamicClass()">save</button>
-  </div>
+    <button *ngIf="editMode" class="btn btn-lg" [ngClass]="isWarningClass ? 'btn-warning' : 'btn-primary'" type="button" (click)="save(true); toggleDynamicClass()">save</button>
+    <button type="button" class="btn btn-success btn-sm" (click)="upvoteIt()">
+      <img src="../assets/upvote.png" width="20" height="20">
+    </button>
+    <button type="button" class="btn btn-danger btn-sm" (click)="downvoteIt()">
+      <img src="../assets/downvote.png" width="20" height="20">
+    </button>
+    <label>Ratings: {{dish.rating}}</label>
+</div>
