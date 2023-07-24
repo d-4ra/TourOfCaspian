@@ -1,0 +1,25 @@
+<div class="input-group mb-3">
+    <span class="input-group-text">Add Dish</span>
+    <input type="text" class="form-control" placeholder="Name..." #searchBox id="search-box" (keypress)="onKeyPress($event, searchBox.value)"/>
+    <span type="button" class="btn btn-success btn-lg" title="add dish" (click)="add(searchBox.value); searchBox.value=''" routerLink="/dishes">Add</span>
+</div>
+<div class="input-group mb-3">
+  <span class="input-group-text">Optional</span>
+  <input type="text" class="form-control" placeholder="Color..." id="colorBox">
+  <input type="text" class="form-control" placeholder="Flavor..." id="flavorBox">
+</div>
+<div>
+  <ul class="list-group" *ngFor="let recipe of recipeLinks">
+    <li class="list-group-item">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Recipe name..." [(ngModel)]="recipe[0]">
+        <input type="text" class="form-control" placeholder="Link..." [(ngModel)]="recipe[1]">
+        <span type="button" class="btn btn-danger" (click)="removeRecipe(recipeLinks.indexOf(recipe))">x</span>
+      </div>
+    </li>
+  </ul>
+</div>
+<div class="mt-2">
+  <button type="button" class="btn btn-primary" (click)="addRecipe()">Add a recipe</button>
+  <button type="button" class="btn btn-dark m-2" (click)="back()">Back</button>
+</div>

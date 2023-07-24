@@ -15,6 +15,7 @@ export class DishDetailComponent implements OnInit {
   dish: Dish | undefined;
   editMode: boolean = false;
   isWarningClass: boolean = false;
+  recipeLinks: Array<string>[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -50,16 +51,12 @@ export class DishDetailComponent implements OnInit {
   edit(): void{
     if(this.editMode) {this.editMode = false; return;}
     this.editMode = true;
+    if(this.dish) this.recipeLinks = this.dish.recipeURL;
   }
 
   toggleDynamicClass(): void {
     if(this.isWarningClass == true) return;
     this.isWarningClass = !this.isWarningClass;
-    // const cmdSaveElement = document.getElementById("saveButton") as HTMLInputElement;
-    // let dynamicClass: string = "";
-    // if(cmdSaveElement.className == "btn btn-primary btn-lg") 
-    // { dynamicClass = "btn btn-warning btn-lg" } else { dynamicClass = "btn btn-primary btn-lg"}
-    // if(dynamicClass == "btn btn-warning btn-lg") { cmdSaveElement.className = dynamicClass; }
   }
 
   upvoteIt(){
@@ -72,5 +69,15 @@ export class DishDetailComponent implements OnInit {
     if(this.dish && this.dish.rating != 0)
     this.dish.rating -= 1;
     this.save(false);
+  }
+
+  removeRecipe(location: number){
+    if(location !== -1){
+      this.recipeLinks.splice(location, 1);
+    }
+  }
+  
+  addRecipe(){
+    this.recipeLinks.push([])
   }
 }

@@ -6,8 +6,16 @@
       <div class="d-flex justify-content-center py-3">
         <img class="rounded img-fluid" height="500" width="500" src="{{dish.img}}">
       </div>
-      <div class="d-flex justify-content-center nav">
-        <a class="h2 d-flex justify-content-center nav-link" href="{{dish.recipeURL}}">Go to Recipe</a>
+      <div class="d-flex justify-content-center">
+        <div class="btn-group" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">View Recipes<span class="caret"></span>
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li *ngFor="let dishRecipe of dish?.recipeURL" role="menuitem">
+              <a class="dropdown-item" [href]="dishRecipe[1]">{{dishRecipe[0]}}</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <div *ngIf="editMode">
@@ -19,22 +27,31 @@
       </div>
       <div class="input-group mb-3">
         <span class="input-group-text">Flavor</span>
-        <input class="form-control" name="dish-flavor" [(ngModel)]="dish.flavor" placeholder="Dish flavor"/>
-      </div>
-      <div class="input-group mb-3">
-        <span class="input-group-text">Recipe URL</span>
-        <input class="form-control" name="dish-recipeURL" [(ngModel)]="dish.recipeURL" placeholder="URL..."/>
         <input class="form-control" name="dish-flavor" [(ngModel)]="dish.flavor" (input)="toggleDynamicClass()" placeholder="Dish flavor"/>
       </div>
+      <div>
+        <ul class="list-group" *ngFor="let recipe of recipeLinks">
+          <li class="list-group-item">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Recipe name..." [(ngModel)]="recipe[0]">
+              <input type="text" class="form-control" placeholder="Link..." [(ngModel)]="recipe[1]">
+              <span type="button" class="btn btn-danger" (click)="removeRecipe(recipeLinks.indexOf(recipe))">x</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <button type="button" class="btn btn-primary mt-2" (click)="addRecipe()">Add a recipe</button>
     </div>
-    <button class="btn btn-dark btn-lg" type="button" (click)="goBack()">Back</button>
-    <button *ngIf="!editMode" class="btn btn-dark btn-lg" type="button" (click)="edit()">Edit Mode</button>
-    <button *ngIf="editMode" class="btn btn-lg" [ngClass]="isWarningClass ? 'btn-warning' : 'btn-primary'" type="button" (click)="save(true); toggleDynamicClass()">save</button>
-    <button type="button" class="btn btn-success btn-sm" (click)="upvoteIt()">
-      <img src="../assets/upvote.png" width="20" height="20">
-    </button>
-    <button type="button" class="btn btn-danger btn-sm" (click)="downvoteIt()">
-      <img src="../assets/downvote.png" width="20" height="20">
-    </button>
-    <label>Ratings: {{dish.rating}}</label>
+    <div class="btn-group mt-2">
+      <button class="btn btn-dark btn-lg" type="button" (click)="goBack()">Back</button>
+      <button *ngIf="!editMode" class="btn btn-dark btn-lg" type="button" (click)="edit()">Edit Mode</button>
+      <button *ngIf="editMode" class="btn btn-lg" [ngClass]="isWarningClass ? 'btn-warning' : 'btn-primary'" type="button" (click)="save(true); toggleDynamicClass()">save</button>
+      <button type="button" class="btn btn-success btn-sm" (click)="upvoteIt()">
+        <img src="../assets/upvote.png" width="20" height="20">
+      </button>
+      <button type="button" class="btn btn-danger btn-sm" (click)="downvoteIt()">
+        <img src="../assets/downvote.png" width="20" height="20">
+      </button>
+    </div>
+    <label class="m-1">Ratings: {{dish.rating}}</label>
 </div>
