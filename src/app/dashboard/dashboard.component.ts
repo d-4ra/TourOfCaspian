@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getDishes(): void {
-    this.dishService.getDishes()
+    this.dishService.getDishesRatingOrder()
       .subscribe(dishes => this.dishes = dishes.slice(0, 4));
   }
 }

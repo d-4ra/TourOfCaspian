@@ -13,9 +13,9 @@
     <div *ngIf="editMode">
       <div class="input-group mb-3">
         <span class="input-group-text">Name</span>
-        <input type="text" class="form-control" name="dish-name" [(ngModel)]="dish.name" placeholder="Dish name"/>
+        <input type="text" class="form-control" name="dish-name" [(ngModel)]="dish.name" (input)="toggleDynamicClass()" placeholder="Dish name"/>
         <span class="input-group-text">Color</span>
-        <input class="form-control" name="dish-color" [(ngModel)]="dish.color" placeholder="Dish color"/>
+        <input class="form-control" name="dish-color" [(ngModel)]="dish.color" (input)="toggleDynamicClass()" placeholder="Dish color"/>
       </div>
       <div class="input-group mb-3">
         <span class="input-group-text">Flavor</span>
@@ -24,9 +24,17 @@
       <div class="input-group mb-3">
         <span class="input-group-text">Recipe URL</span>
         <input class="form-control" name="dish-recipeURL" [(ngModel)]="dish.recipeURL" placeholder="URL..."/>
+        <input class="form-control" name="dish-flavor" [(ngModel)]="dish.flavor" (input)="toggleDynamicClass()" placeholder="Dish flavor"/>
       </div>
-      <button class="btn btn-primary btn-md" type="button" #cmdSave (click)="save(); toggleDynamicClass()">save</button>
     </div>
     <button class="btn btn-dark btn-lg" type="button" (click)="goBack()">Back</button>
-    <button class="btn btn-dark btn-lg" type="button" (click)="edit(); toggleDynamicClass()" id="editButton">Edit Mode</button>
-  </div>
+    <button *ngIf="!editMode" class="btn btn-dark btn-lg" type="button" (click)="edit()">Edit Mode</button>
+    <button *ngIf="editMode" class="btn btn-lg" [ngClass]="isWarningClass ? 'btn-warning' : 'btn-primary'" type="button" (click)="save(true); toggleDynamicClass()">save</button>
+    <button type="button" class="btn btn-success btn-sm" (click)="upvoteIt()">
+      <img src="../assets/upvote.png" width="20" height="20">
+    </button>
+    <button type="button" class="btn btn-danger btn-sm" (click)="downvoteIt()">
+      <img src="../assets/downvote.png" width="20" height="20">
+    </button>
+    <label>Ratings: {{dish.rating}}</label>
+</div>

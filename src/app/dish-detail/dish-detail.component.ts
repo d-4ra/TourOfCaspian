@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 
 import { Dish } from '../dish';
 import { DishService } from '../dish.service';
+import { NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-dish-detail',
@@ -13,6 +14,7 @@ import { DishService } from '../dish.service';
 export class DishDetailComponent implements OnInit {
   dish: Dish | undefined;
   editMode: boolean = false;
+  isWarningClass: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,10 +32,14 @@ export class DishDetailComponent implements OnInit {
       .subscribe(dish => this.dish = dish);
   }
 
-  save(): void {
+  save(subscribeBool: boolean): void {
     if (this.dish) {
-      this.dishService.updateDish(this.dish)
-        .subscribe(() => this.edit());
+      if(subscribeBool) {
+        this.dishService.updateDish(this.dish)
+        .subscribe(() => {this.edit(); this.isWarningClass = false});
+      } else{
+        this.dishService.updateDish(this.dish).subscribe(() => console.log("Updated <false>"));
+      }
     }
   }
 
@@ -47,10 +53,24 @@ export class DishDetailComponent implements OnInit {
   }
 
   toggleDynamicClass(): void {
-    const cmdEditElement = document.getElementById("editButton") as HTMLInputElement;
-    let dynamicClass: string = "";
-    if(cmdEditElement.className == "btn btn-warning btn-md") 
-    { dynamicClass = "btn btn-dark btn-lg" } else { dynamicClass = "btn btn-warning btn-md"}
-    cmdEditElement.className = dynamicClass;
+    if(this.isWarningClass == true) return;
+    this.isWarningClass = !this.isWarningClass;
+    // const cmdSaveElement = document.getElementById("saveButton") as HTMLInputElement;
+    // let dynamicClass: string = "";
+    // if(cmdSaveElement.className == "btn btn-primary btn-lg") 
+    // { dynamicClass = "btn btn-warning btn-lg" } else { dynamicClass = "btn btn-primary btn-lg"}
+    // if(dynamicClass == "btn btn-warning btn-lg") { cmdSaveElement.className = dynamicClass; }
+  }
+
+  upvoteIt(){
+    if(this.dish)
+    this.dish.rating += 1;
+    this.save(false);
+  }
+
+  downvoteIt(){
+    if(this.dish && this.dish.rating != 0)
+    this.dish.rating -= 1;
+    this.save(false);
   }
 }

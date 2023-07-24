@@ -5,4 +5,5 @@ export interface Dish {
     flavor: string;
     img: string;
     recipeURL: string;
+    rating: number;
 }
