@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormArray, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Dish } from '../dish';
 import { DishService } from '../dish.service';
 import { Location } from '@angular/common';
@@ -10,15 +11,40 @@ import { Location } from '@angular/common';
 })
 export class AddDishComponent implements OnInit {
   dishes: Dish[] = [];
-  recipeLinks: Array<string>[] = [];
+  submitted: boolean = false;
+
+  recipeLinks = this.fb.group({
+    name: ['', [Validators.required, Validators.maxLength(30)]],
+    color: ['', Validators.maxLength(10)],
+    flavor: ['', Validators.maxLength(100)],
+    recipes: this.fb.array([])
+  })
+
+  get getForm() { return this.recipeLinks.controls; }
+  get getRecipes() {
+    return this.recipeLinks.controls["recipes"] as FormArray;
+  }
 
   constructor(
     private dishService: DishService,
-    private location: Location
+    private location: Location,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
     this.getDishes();
+    this.addRecipe();
+  }
+
+  onSubmit() {
+    this.submitted = true;
+    console.log(this.recipeLinks.valid)
+
+    if (this.recipeLinks.invalid) {
+      return;
+    }
+
+    this.add();
   }
 
   getDishes(): void {
@@ -26,46 +52,48 @@ export class AddDishComponent implements OnInit {
     .subscribe(dishes => this.dishes = dishes);
   }
   
-  add(name: string): void {
-    let color: string;
-    let flavor: string;
-    let recipeURL: Array<string>[];
-    const colorBoxElement = document.getElementById("colorBox") as HTMLInputElement;
-    const flavorBoxElement = document.getElementById("flavorBox") as HTMLInputElement;
-    const recipeBoxElement = document.getElementById("recipeBox") as HTMLInputElement;
-    color = colorBoxElement.value;
-    flavor = flavorBoxElement.value;
-    recipeURL = this.recipeLinks;
+  add(): void {
+    let name = this.recipeLinks.value.name?.trim();
+    let color = this.recipeLinks.value.color?.trim();
+    let flavor = this.recipeLinks.value.flavor?.trim();
+    let recipeURL = this.recipeLinks.value.recipes; //? this.recipeLinks.value.recipes : [];
 
-    name = name.trim();
-    color = color.trim();
-    flavor.trim();
+    let arrayifiedRecipeURL: Array<string>[] = [];
+    for (let i = 0; i < (this.recipeLinks.value.recipes?.length || 0); i++) {
+      const recipe = this.recipeLinks.value.recipes?.[i] as { recipeName: string; link: string };
+      arrayifiedRecipeURL.push([recipe.recipeName, recipe.link]);
+    }
+    recipeURL = arrayifiedRecipeURL;
 
     if (!name) { return; }
-    this.dishService.addDish({ name, color, flavor, img: "../assets/nopicture.jpeg", recipeURL, rating: 0} as Dish)
+    this.dishService.addDish({ name, color, flavor, img: "../assets/nopicture.jpeg", recipeURL, rating: 0 } as Dish)
       .subscribe(dish => {
         this.dishes.push(dish);
       });
-  }
-  
-  onKeyPress(event: KeyboardEvent, text: string) {
-    if (event.key === "Enter") {
-      this.add(text);
-      event.preventDefault();
-    }
-  }
+}
 
   addRecipe(){
-    this.recipeLinks.push([])
+    const recipeForm = this.fb.group({
+      recipeName: ['', [Validators.required, Validators.maxLength(200)]],
+      link: ['', [Validators.required, Validators.maxLength(200)]]
+    });
+    this.getRecipes.push(recipeForm);
   }
   
   removeRecipe(location: number){
-    if(location !== -1){
-      this.recipeLinks.splice(location, 1);
-    }
+    this.getRecipes.removeAt(location);
   }
+
+  toFormGroup = (form: AbstractControl) => form as FormGroup;
 
   back(){
     this.location.back();
   }
 }
+
+// onKeyPress(event: KeyboardEvent, text: string) {
+  //   if (event.key === "Enter") {
+  //     this.add(text);
+  //     event.preventDefault();
+  //   }
+  // }

@@ -1,25 +1,53 @@
-<div class="input-group mb-3">
+<form [formGroup]="recipeLinks" (ngSubmit)="onSubmit()">
+  <div class="input-group mb-3">
     <span class="input-group-text">Add Dish</span>
-    <input type="text" class="form-control" placeholder="Name..." #searchBox id="search-box" (keypress)="onKeyPress($event, searchBox.value)"/>
-    <span type="button" class="btn btn-success btn-lg" title="add dish" (click)="add(searchBox.value); searchBox.value=''" routerLink="/dishes">Add</span>
-</div>
-<div class="input-group mb-3">
-  <span class="input-group-text">Optional</span>
-  <input type="text" class="form-control" placeholder="Color..." id="colorBox">
-  <input type="text" class="form-control" placeholder="Flavor..." id="flavorBox">
-</div>
-<div>
-  <ul class="list-group" *ngFor="let recipe of recipeLinks">
-    <li class="list-group-item">
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Recipe name..." [(ngModel)]="recipe[0]">
-        <input type="text" class="form-control" placeholder="Link..." [(ngModel)]="recipe[1]">
-        <span type="button" class="btn btn-danger" (click)="removeRecipe(recipeLinks.indexOf(recipe))">x</span>
+    <input type="text" class="form-control" formControlName="name" placeholder="Name..." [ngClass]="{ 'is-invalid': submitted && getForm.name.errors }"/>
+    <div *ngIf="submitted && getForm.name.errors" class="invalid-feedback">
+      <div *ngIf="getForm.name.errors['required']">Name is required</div>
+      <div *ngIf="getForm.name.errors['maxlength']">Max 30 characters</div>
+    </div>
+  </div>
+  <div class="input-group mb-3">
+    <span class="input-group-text">Optional</span>
+    <input type="text" class="form-control" formControlName="color" placeholder="Color..." [ngClass]="{ 'is-invalid': submitted && getForm.color.errors }">
+    <input type="text" class="form-control" formControlName="flavor" placeholder="Flavor..." [ngClass]="{ 'is-invalid': submitted && getForm.flavor.errors }">
+    <div *ngIf="submitted && getForm.color.errors" class="invalid-feedback">
+      <div *ngIf="getForm.color.errors['maxlength']">Max 10 characters</div>
+    </div>
+    <div *ngIf="submitted && getForm.flavor.errors" class="invalid-feedback">
+      <div *ngIf="getForm.flavor.errors['maxlength']">Max 100 characters</div>
+    </div>
+  </div>
+  <div>
+    <ng-container *ngFor="let recipeForm of getRecipes.controls; let i = index">
+      <ul class="list-group">
+        <li class="list-group-item">
+          <div class="input-group" [formGroup]="toFormGroup(recipeForm)">
+            <input type="text" class="form-control" formControlName="recipeName" placeholder="Recipe name..." [ngClass]="{ 'is-invalid': submitted && recipeForm.get('recipeName')?.errors}">
+            <input type="text" class="form-control" formControlName="link" placeholder="Link..." [ngClass]="{ 'is-invalid': submitted && recipeForm.get('link')?.errors}">
+            <span type="button" class="btn btn-danger" (click)="removeRecipe(recipeForm.value.index)">x</span>
+            <div *ngIf="submitted && recipeForm.get('recipeName')?.errors" class="invalid-feedback">
+              <div *ngIf="recipeForm.get('recipeName')?.hasError('required')">Recipe name is required</div>
+              <div *ngIf="recipeForm.get('recipeName')?.hasError('maxlength')">Max 200 characters</div>
+            </div>
+            <div *ngIf="submitted && recipeForm.get('link')?.errors" class="invalid-feedback">
+              <div *ngIf="recipeForm.get('link')?.hasError('required')">Link is required</div>
+              <div *ngIf="recipeForm.get('link')?.hasError('maxlength')">Max 200 characters</div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </ng-container>
+  </div>
+  <div class="mt-2">
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-dark" (click)="back()">Back</button>
+        <span type="submit" class="btn btn-success m-2" title="add dish" (click)="onSubmit()">Submit</span>
       </div>
-    </li>
-  </ul>
-</div>
-<div class="mt-2">
-  <button type="button" class="btn btn-primary" (click)="addRecipe()">Add a recipe</button>
-  <button type="button" class="btn btn-dark m-2" (click)="back()">Back</button>
-</div>
+      <div class="col text-end">
+        <button type="button" class="btn btn-primary m-2" (click)="addRecipe()">Add a recipe</button>
+      </div>
+    </div>
+  </div>
+</form>
