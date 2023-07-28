@@ -25,7 +25,7 @@
           <div class="input-group" [formGroup]="toFormGroup(recipeForm)">
             <input type="text" class="form-control" formControlName="recipeName" placeholder="Recipe name..." [ngClass]="{ 'is-invalid': submitted && recipeForm.get('recipeName')?.errors}">
             <input type="text" class="form-control" formControlName="link" placeholder="Link..." [ngClass]="{ 'is-invalid': submitted && recipeForm.get('link')?.errors}">
-            <span type="button" class="btn btn-danger" (click)="removeRecipe(recipeForm.value.index)">x</span>
+            <span type="button" class="btn btn-danger" (click)="removeRecipe(i)">x</span>
             <div *ngIf="submitted && recipeForm.get('recipeName')?.errors" class="invalid-feedback">
               <div *ngIf="recipeForm.get('recipeName')?.hasError('required')">Recipe name is required</div>
               <div *ngIf="recipeForm.get('recipeName')?.hasError('maxlength')">Max 200 characters</div>
