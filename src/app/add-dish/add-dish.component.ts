@@ -3,6 +3,7 @@ import { FormGroup, FormArray, FormControl, FormBuilder, Validators, AbstractCon
 import { Dish } from '../dish';
 import { DishService } from '../dish.service';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-dish',
@@ -28,7 +29,8 @@ export class AddDishComponent implements OnInit {
   constructor(
     private dishService: DishService,
     private location: Location,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -38,7 +40,6 @@ export class AddDishComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    console.log(this.recipeLinks.valid)
 
     if (this.recipeLinks.invalid) {
       return;
@@ -70,6 +71,7 @@ export class AddDishComponent implements OnInit {
       .subscribe(dish => {
         this.dishes.push(dish);
       });
+    this.router.navigate(['/dishes']); //Job done get outta here!
 }
 
   addRecipe(){
