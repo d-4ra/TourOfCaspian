@@ -15,6 +15,9 @@
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
+            "allowedCommonJsDependencies": [
+              "validator"
+            ],
             "polyfills": [
               "zone.js"
             ],

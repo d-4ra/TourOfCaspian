@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, FormBuilder, Validators, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
+import validator from "validator";
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -36,7 +37,7 @@ export class DishDetailComponent implements OnInit {
   addRecipe(){
     const recipeForm = this.fb.group({
       recipeName: ['', [Validators.required, Validators.maxLength(200)]],
-      link: ['', [Validators.required, Validators.maxLength(200)]]
+      link: ['', [Validators.required, Validators.maxLength(200), this.createURLValidator()]]
     });
     this.getRecipes.push(recipeForm);
   }
@@ -116,7 +117,7 @@ export class DishDetailComponent implements OnInit {
     this.dish?.recipeURL.forEach(element => {
       const recipeForm = this.fb.group({
         recipeName: [`${element[0]}`, [Validators.required, Validators.maxLength(200)]],
-        link: [`${element[1]}`, [Validators.required, Validators.maxLength(200)]]
+        link: [`${element[1]}`, [Validators.required, Validators.maxLength(200), this.createURLValidator()]]
       });
       this.getRecipes.push(recipeForm);
     });
@@ -137,5 +138,20 @@ export class DishDetailComponent implements OnInit {
     if(this.dish && this.dish.rating != 0)
     this.dish.rating -= 1;
     this.save(false);
+  }
+
+  createURLValidator(): ValidatorFn {
+    return (control:AbstractControl) : ValidationErrors | null => {
+
+        const value = control.value;
+
+        if (!value) {
+            return null;
+        }
+
+        const validURL = validator.isURL(value);
+
+        return !validURL ? {realURL:true}: null;
+    }
   }
 }

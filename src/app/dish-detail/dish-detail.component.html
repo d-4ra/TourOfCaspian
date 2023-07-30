@@ -55,6 +55,7 @@
                   <div *ngIf="submitted && recipeForm.get('link')?.errors" class="invalid-feedback">
                     <div *ngIf="recipeForm.get('link')?.hasError('required')">Link is required</div>
                     <div *ngIf="recipeForm.get('link')?.hasError('maxlength')">Max 200 characters</div>
+                    <div *ngIf="recipeForm.get('link')?.hasError('realURL')">Invalid URL</div>
                   </div>
                 </div>
               </li>

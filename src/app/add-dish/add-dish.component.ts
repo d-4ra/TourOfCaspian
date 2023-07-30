@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormArray, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { FormGroup, FormArray, FormControl, FormBuilder, Validators, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
+import validator from "validator";
 import { Dish } from '../dish';
 import { DishService } from '../dish.service';
 import { Location } from '@angular/common';
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-dish.component.css']
 })
 export class AddDishComponent implements OnInit {
-  dishes: Dish[] = [];
+  //dishes: Dish[] = [];
   submitted: boolean = false;
 
   recipeLinks = this.fb.group({
@@ -30,11 +31,10 @@ export class AddDishComponent implements OnInit {
     private dishService: DishService,
     private location: Location,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
-    this.getDishes();
     this.addRecipe();
   }
 
@@ -49,8 +49,8 @@ export class AddDishComponent implements OnInit {
   }
 
   getDishes(): void {
-    this.dishService.getDishes()
-    .subscribe(dishes => this.dishes = dishes);
+    // this.dishService.getDishes()
+    // .subscribe(dishes => this.dishes = dishes);
   }
   
   add(): void {
@@ -69,7 +69,7 @@ export class AddDishComponent implements OnInit {
     if (!name) { return; }
     this.dishService.addDish({ name, color, flavor, img: "../assets/nopicture.jpeg", recipeURL, rating: 0 } as Dish)
       .subscribe(dish => {
-        this.dishes.push(dish);
+        // this.dishes.push(dish);
       });
     this.router.navigate(['/dishes']); //Job done get outta here!
 }
@@ -77,7 +77,7 @@ export class AddDishComponent implements OnInit {
   addRecipe(){
     const recipeForm = this.fb.group({
       recipeName: ['', [Validators.required, Validators.maxLength(200)]],
-      link: ['', [Validators.required, Validators.maxLength(200)]]
+      link: ['', [Validators.required, Validators.maxLength(200), this.createURLValidator()]]
     });
     this.getRecipes.push(recipeForm);
   }
@@ -91,6 +91,21 @@ export class AddDishComponent implements OnInit {
   back(){
     this.location.back();
   }
+
+  createURLValidator(): ValidatorFn {
+    return (control:AbstractControl) : ValidationErrors | null => {
+
+        const value = control.value;
+
+        if (!value) {
+            return null;
+        }
+
+        const validURL = validator.isURL(value);
+
+        return !validURL ? {realURL:true}: null;
+    }
+  }
 }
 
 // onKeyPress(event: KeyboardEvent, text: string) {
@@ -99,3 +114,5 @@ export class AddDishComponent implements OnInit {
   //     event.preventDefault();
   //   }
   // }
+
+  
