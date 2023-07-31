@@ -16,7 +16,6 @@ export class DishDetailComponent implements OnInit {
   dish: Dish | undefined;
   editMode: boolean = false;
   isWarningClass: boolean = false;
-  editForm!: FormGroup;
   submitted: boolean = false;
 
   constructor(
@@ -27,6 +26,13 @@ export class DishDetailComponent implements OnInit {
   ) {}
 
   //FORM GROUP STUFF----------------------------------------------------
+  editForm = this.fb.group({
+    name: [``, [Validators.required, Validators.maxLength(30)]],
+    color: [``, Validators.maxLength(10)],
+    flavor: [``, Validators.maxLength(100)],
+    recipes: this.fb.array([])
+  })
+
   get getForm() { return this.editForm.controls; }
   get getRecipes() {
     return this.editForm?.controls["recipes"] as FormArray;
@@ -83,14 +89,15 @@ export class DishDetailComponent implements OnInit {
 
   setSaveValues(){
     if(this.dish){
-      this.dish.name = this.editForm.value.name;
-      this.dish.color = this.editForm.value.color;
-      this.dish.flavor = this.editForm.value.flavor;
+      this.dish.name = this.editForm.value.name as string;
+      this.dish.color = this.editForm.value.color as string;
+      this.dish.flavor = this.editForm.value.flavor as string;
 
       let tempArray: Array<string>[] = [];
-      this.editForm.value.recipes.forEach((element: any) => {
+      this.editForm.value.recipes?.forEach((element: any) => {
         tempArray.push([element.recipeName, element.link])
       });
+
       this.dish.recipeURL = tempArray;
     }
   }
@@ -107,20 +114,23 @@ export class DishDetailComponent implements OnInit {
   }
 
   setEditFormData(){
-    this.editForm = this.fb.group({
-      name: [`${this.dish?.name}`, [Validators.required, Validators.maxLength(30)]],
-      color: [`${this.dish?.color}`, Validators.maxLength(10)],
-      flavor: [`${this.dish?.flavor}`, Validators.maxLength(100)],
-      recipes: this.fb.array([])
-    })
+    if(this.dish){
+      this.editForm.patchValue({
+        name: `${this.dish.name}`,
+        color: `${this.dish.color}`,
+        flavor: `${this.dish.flavor}`
+      })
 
-    this.dish?.recipeURL.forEach(element => {
-      const recipeForm = this.fb.group({
-        recipeName: [`${element[0]}`, [Validators.required, Validators.maxLength(200)]],
-        link: [`${element[1]}`, [Validators.required, Validators.maxLength(200), this.createURLValidator()]]
+      this.getRecipes.clear();
+
+      this.dish.recipeURL.forEach(element => {
+        const recipeForm = this.fb.group({
+          recipeName: [`${element[0]}`, [Validators.required, Validators.maxLength(200)]],
+          link: [`${element[1]}`, [Validators.required, Validators.maxLength(200), this.createURLValidator()]]
+        });
+        this.getRecipes.push(recipeForm);
       });
-      this.getRecipes.push(recipeForm);
-    });
+    }
   }
 
   toggleDynamicClass(): void {
