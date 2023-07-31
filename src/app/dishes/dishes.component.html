@@ -1,22 +1,16 @@
-<h2>My Dishes</h2>
-<div class="input-group mb-3">
-  <span class="input-group-text">Add Dish</span>
-    <input type="text" class="form-control" placeholder="Name..." #searchBox id="search-box" (keypress)="onKeyPress($event, searchBox.value)"/>
-    <span type="button" class="btn btn-success btn-lg" title="add dish" (click)="add(searchBox.value); searchBox.value=''">Add</span>
+<div class="btn-group">
+  <button type="button" class="btn btn-dark btn-lg">My Dishes</button>
+  <button type="button" class="btn btn-success btn-lg" title="add dish" routerLink="/add-dish">Add</button>
 </div>
-
-<div class="input-group mb-3" *ngIf="searchBox.value.length > 0">
-  <span class="input-group-text">Optional</span>
-    <input type="text" class="form-control" placeholder="Color..." id="colorBox">
-    <input type="text" class="form-control" placeholder="Flavor..." id="flavorBox">
+<div class="m-3">
+  <ul class="list-group-flush">
+    <li class="list-group-item btn-group mt-2" *ngFor="let dish of dishes">
+      <a class="btn btn-dark" routerLink="/detail/{{dish.id}}">
+        <span class="badge text-bg-warning">Rating {{dish.rating}}</span>
+        <span class="badge">ID:{{dish.id}}</span>{{dish.name}}
+      </a>
+      <button type="button" class="btn btn-danger btn-md" title="delete dish"
+        (click)="delete(dish)">x</button>
+    </li>
+  </ul>
 </div>
-
-<ul class="list-group-flush">
-  <li class="list-group-item btn-group" *ngFor="let dish of dishes">
-    <a class="btn btn-dark" routerLink="/detail/{{dish.id}}">
-      <span class="badge">{{dish.id}}</span> {{dish.name}}
-    </a>
-    <button type="button" class="btn btn-danger btn-md" title="delete dish"
-      (click)="delete(dish)">x</button>
-  </li>
-</ul>
