@@ -1,13 +1,30 @@
-<div class="d-flex justify-content-center">
-  <nav>
-    <a routerLink="/dashboard" class="btn btn-lg btn-secondary">Dashboard</a>
+<div class="navbar navbar-expand-lg sticky-top bd-navbar">
+  <nav class="container-xxl">
+      <div class="button-group">
+        <a class="navbar-brand" href="#" title="Tour of Caspian">
+          <img src="../assets/LogoTOC.png" width="40" height="40">
+        </a>
+        <a type="button" routerLink="/dashboard" class="btn btn-dark me-2" title="Dashboard">Dashboard</a>
+        <a type="button" routerLink="/dishes" class="btn btn-dark me-2" title="Dishes">Dishes</a>
+        <a type="button" routerLink="/add-dish" class="btn btn-dark" title="Add New Dish">Add Dish</a>
+      </div>
+      <div class="col-auto">
+        <input type="text" class="form-control d-none d-sm-block" placeholder="Search..." #searchBox (input)="search(searchBox.value)">
+      </div>
+      <h1 class="d-none d-md-block">{{title}}</h1>
   </nav>
-  <div class="mx-3">
-    <h1 class="shadow-lg p-3 mb-4 bg-white rounded">{{title}}</h1>
-  </div>
-  <nav>
-    <a routerLink="/dishes" class="btn btn-lg btn-secondary">Dishes</a>
-  </nav>
+</div>
+<div>
+  <input type="text" class="form-control mt-3 mb-1 d-sm-none" placeholder="Search..." #searchBox2 (input)="search(searchBox2.value)">
+</div>
+<div>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let dish of dishes$ | async" >
+      <a routerLink="/detail/{{dish.id}}">
+        {{dish.name}}
+      </a>
+    </li>
+  </ul>
 </div>
 
 <router-outlet></router-outlet>
