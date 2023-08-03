@@ -1,5 +1,5 @@
 <div class="navbar navbar-expand-lg sticky-top bd-navbar">
-  <nav class="container-xxl">
+  <nav class="container-fluid">
       <div class="button-group">
         <a class="navbar-brand" href="#" title="Tour of Caspian">
           <img src="../assets/LogoTOC.png" width="40" height="40">
@@ -9,7 +9,7 @@
         <a type="button" routerLink="/add-dish" class="btn btn-dark" title="Add New Dish">Add Dish</a>
       </div>
       <div class="col-auto">
-        <input type="text" class="form-control d-none d-sm-block" placeholder="Search..." #searchBox (input)="search(searchBox.value)">
+        <input type="text" class="form-control d-none d-sm-block sBox1" placeholder="Search..." #searchBox (input)="search(searchBox.value)">
       </div>
       <h1 class="d-none d-md-block">{{title}}</h1>
   </nav>
