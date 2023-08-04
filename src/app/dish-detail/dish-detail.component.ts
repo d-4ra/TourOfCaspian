@@ -139,15 +139,17 @@ export class DishDetailComponent implements OnInit {
   }
 
   upvoteIt(){
-    if(this.dish)
-    this.dish.rating += 1;
-    this.save(false);
+    if(this.dish){
+      this.dish.rating += 1;
+      this.dishService.updateDish(this.dish).subscribe(() => console.log("Updated <false>"));
+    }
   }
 
   downvoteIt(){
-    if(this.dish && this.dish.rating != 0)
-    this.dish.rating -= 1;
-    this.save(false);
+    if(this.dish && this.dish.rating != 0) {
+      this.dish.rating -= 1;
+    this.dishService.updateDish(this.dish).subscribe(() => console.log("Updated <false>"));
+    }
   }
 
   createURLValidator(): ValidatorFn {

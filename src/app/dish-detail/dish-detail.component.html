@@ -1,82 +1,107 @@
 <div *ngIf="dish">
-    <h2 class="d-flex justify-content-center">~~~{{dish.name | uppercase}}~~~</h2>
-    <div>
-      <span class="h2 text-danger d-flex justify-content-center">{{dish.color}}</span>
-      <span class="h2 d-flex justify-content-center">{{dish.flavor}}</span>
-      <div class="d-flex justify-content-center py-3">
-        <img class="rounded img-fluid" height="500" width="500" src="{{dish.img}}">
-      </div>
-      <div class="d-flex justify-content-center">
-        <div class="btn-group" dropdown>
-          <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle mb-2" aria-controls="dropdown-basic">View Recipes<span class="caret"></span>
-          </button>
-          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
-            <li *ngFor="let dishRecipe of dish?.recipeURL" role="menuitem">
-              <a class="dropdown-item" [href]="dishRecipe[1]">{{dishRecipe[0]}}</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="editMode">
-      <form [formGroup]="editForm">
-        <div class="input-group mb-3">
-          <span class="input-group-text">Name</span>
-          <input type="text" class="form-control" name="dish-name" formControlName="name" (input)="toggleDynamicClass()" placeholder="Dish name" [ngClass]="{ 'is-invalid': submitted && getForm['name'].errors}"/>
-          <span class="input-group-text">Color</span>
-          <div *ngIf="submitted && getForm['name'].errors" class="invalid-feedback">
-            <div *ngIf="getForm['name'].errors['required']">Name is required</div>
-            <div *ngIf="getForm['name'].errors['maxlength']">Max 30 characters</div>
-          </div>
-          <input class="form-control" name="dish-color" formControlName="color" (input)="toggleDynamicClass()" placeholder="Dish color" [ngClass]="{ 'is-invalid': submitted && getForm['color'].errors}"/>
-          <div *ngIf="submitted && getForm['color'].errors" class="invalid-feedback">
-            <div *ngIf="getForm['color'].errors['maxlength']">Max 10 characters</div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <span class="input-group-text">Flavor</span>
-          <input class="form-control" name="dish-flavor" formControlName="flavor" (input)="toggleDynamicClass()" placeholder="Dish flavor" [ngClass]="{ 'is-invalid': submitted && getForm['flavor'].errors}"/>
-          <div *ngIf="submitted && getForm['flavor'].errors" class="invalid-feedback">
-            <div *ngIf="getForm['flavor'].errors['maxlength']">Max 100 characters</div>
-          </div>
-        </div>
-        <div>
-          <ng-container *ngFor="let recipeForm of getRecipes.controls; let i = index">
-            <ul class="list-group">
-              <li class="list-group-item">
-                <div class="input-group" [formGroup]="toFormGroup(recipeForm)">
-                  <input type="text" class="form-control" placeholder="Recipe name..." formControlName="recipeName" [ngClass]="{ 'is-invalid': submitted && recipeForm.get('recipeName')?.errors}">
-                  <input type="text" class="form-control" placeholder="Link..." formControlName="link" [ngClass]="{ 'is-invalid': submitted && recipeForm.get('link')?.errors}">
-                  <span type="button" class="btn btn-danger" (click)="removeRecipe(i)">x</span>
-                  <div *ngIf="submitted && recipeForm.get('recipeName')?.errors" class="invalid-feedback">
-                    <div *ngIf="recipeForm.get('recipeName')?.hasError('required')">Recipe name is required</div>
-                    <div *ngIf="recipeForm.get('recipeName')?.hasError('maxlength')">Max 200 characters</div>
-                  </div>
-                  <div *ngIf="submitted && recipeForm.get('link')?.errors" class="invalid-feedback">
-                    <div *ngIf="recipeForm.get('link')?.hasError('required')">Link is required</div>
-                    <div *ngIf="recipeForm.get('link')?.hasError('maxlength')">Max 200 characters</div>
-                    <div *ngIf="recipeForm.get('link')?.hasError('realURL')">Invalid URL</div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col d-flex justify-content-center">
+        <div class="card mt-2" style="width: 25rem;">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col">
+                    <h4 class="card-title">{{dish.name}}</h4>
+                    <p class="card-text text-primary">{{dish.color}}</p>
+                    <div class="btn-group" dropdown>
+                      <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle mb-2" aria-controls="dropdown-basic">View Recipes<span class="caret"></span>
+                      </button>
+                      <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+                        <li *ngFor="let dishRecipe of dish?.recipeURL" role="menuitem">
+                          <a class="dropdown-item" [href]="dishRecipe[1]">{{dishRecipe[0]}}</a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
-              </li>
-            </ul>
-          </ng-container>
+              </div>
+              <div class="col-6">
+                <p class="card-text text">{{dish.flavor}}</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col text-end">
-          <button type="button" class="btn btn-primary mt-2" (click)="addRecipe()">Add a recipe</button>
+      </div>
+      <div class="d-flex justify-content-center mt-2">
+        <img class="rounded img-fluid" height="500" width="500" src="{{dish.img}}">
+      </div>
+      <div class="col-12 d-flex justify-content-center mt-2">
+        <div class="btn-group">
+          <button class="btn btn-dark btn-lg" type="button" (click)="goBack()">Back</button>
+          <button *ngIf="!editMode" class="btn btn-dark btn-lg" type="button" (click)="edit()">Edit Mode</button>
+          <button *ngIf="editMode" class="btn btn-lg" [ngClass]="isWarningClass ? 'btn-warning' : 'btn-primary'" type="button" (click)="onSubmit(); toggleDynamicClass()">save</button>
+          <button type="button" class="btn btn-success btn-sm" (click)="upvoteIt()">
+            <img src="../assets/upvote.png" width="20" height="20">
+          </button>
+          <button type="button" class="btn btn-danger btn-sm" (click)="downvoteIt()">
+            <img src="../assets/downvote.png" width="20" height="20">
+          </button>
+          <button type="button" class="btn btn-dark btn-sm">{{dish.rating}}</button>
         </div>
-      </form>
+      </div>
     </div>
-    <div class="btn-group mt-2">
-      <button class="btn btn-dark btn-lg" type="button" (click)="goBack()">Back</button>
-      <button *ngIf="!editMode" class="btn btn-dark btn-lg" type="button" (click)="edit()">Edit Mode</button>
-      <button *ngIf="editMode" class="btn btn-lg" [ngClass]="isWarningClass ? 'btn-warning' : 'btn-primary'" type="button" (click)="onSubmit(); toggleDynamicClass()">save</button>
-      <button type="button" class="btn btn-success btn-sm" (click)="upvoteIt()">
-        <img src="../assets/upvote.png" width="20" height="20">
-      </button>
-      <button type="button" class="btn btn-danger btn-sm" (click)="downvoteIt()">
-        <img src="../assets/downvote.png" width="20" height="20">
-      </button>
+  </div>
+
+    <div *ngIf="editMode">
+      <div class="row">
+        <div class="col d-flex justify-content-center mt-2">
+          <div class="card" style="width: 50rem;">
+            <form [formGroup]="editForm">
+              <div class="input-group mb-3">
+                <span class="input-group-text">Name</span>
+                <input type="text" class="form-control" name="dish-name" formControlName="name" (input)="toggleDynamicClass()" placeholder="Dish name" [ngClass]="{ 'is-invalid': submitted && getForm['name'].errors}"/>
+                <span class="input-group-text">Color</span>
+                <div *ngIf="submitted && getForm['name'].errors" class="invalid-feedback">
+                  <div *ngIf="getForm['name'].errors['required']">Name is required</div>
+                  <div *ngIf="getForm['name'].errors['maxlength']">Max 30 characters</div>
+                </div>
+                <input class="form-control" name="dish-color" formControlName="color" (input)="toggleDynamicClass()" placeholder="Dish color" [ngClass]="{ 'is-invalid': submitted && getForm['color'].errors}"/>
+                <div *ngIf="submitted && getForm['color'].errors" class="invalid-feedback">
+                  <div *ngIf="getForm['color'].errors['maxlength']">Max 10 characters</div>
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <span class="input-group-text">Flavor</span>
+                <input class="form-control" name="dish-flavor" formControlName="flavor" (input)="toggleDynamicClass()" placeholder="Dish flavor" [ngClass]="{ 'is-invalid': submitted && getForm['flavor'].errors}"/>
+                <div *ngIf="submitted && getForm['flavor'].errors" class="invalid-feedback">
+                  <div *ngIf="getForm['flavor'].errors['maxlength']">Max 100 characters</div>
+                </div>
+              </div>
+              <div>
+                <ng-container *ngFor="let recipeForm of getRecipes.controls; let i = index">
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <div class="input-group" [formGroup]="toFormGroup(recipeForm)">
+                        <input type="text" class="form-control" placeholder="Recipe name..." formControlName="recipeName" [ngClass]="{ 'is-invalid': submitted && recipeForm.get('recipeName')?.errors}">
+                        <input type="text" class="form-control" placeholder="Link..." formControlName="link" [ngClass]="{ 'is-invalid': submitted && recipeForm.get('link')?.errors}">
+                        <span type="button" class="btn btn-danger" (click)="removeRecipe(i)">x</span>
+                        <div *ngIf="submitted && recipeForm.get('recipeName')?.errors" class="invalid-feedback">
+                          <div *ngIf="recipeForm.get('recipeName')?.hasError('required')">Recipe name is required</div>
+                          <div *ngIf="recipeForm.get('recipeName')?.hasError('maxlength')">Max 200 characters</div>
+                        </div>
+                        <div *ngIf="submitted && recipeForm.get('link')?.errors" class="invalid-feedback">
+                          <div *ngIf="recipeForm.get('link')?.hasError('required')">Link is required</div>
+                          <div *ngIf="recipeForm.get('link')?.hasError('maxlength')">Max 200 characters</div>
+                          <div *ngIf="recipeForm.get('link')?.hasError('realURL')">Invalid URL</div>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </ng-container>
+              </div>
+              <div class="col text-end">
+                <button type="button" class="btn btn-primary mt-2" (click)="addRecipe()">Add a recipe</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-    <label class="m-1">Ratings: {{dish.rating}}</label>
 </div>
