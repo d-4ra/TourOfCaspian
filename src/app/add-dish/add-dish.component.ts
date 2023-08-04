@@ -106,6 +106,11 @@ export class AddDishComponent implements OnInit {
         return !validURL ? {realURL:true}: null;
     }
   }
+
+  resetAll(){
+    this.recipeLinks.reset();
+    this.submitted = false;
+  }
 }
 
 // onKeyPress(event: KeyboardEvent, text: string) {
