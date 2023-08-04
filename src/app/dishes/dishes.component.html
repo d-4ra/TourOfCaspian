@@ -3,27 +3,22 @@
     <div class="col-12 text-center">
       <h2 class="mt-2">Current Dishes</h2>
     </div>
-    <div class="d-flex justify-content-center">
-      <div class="card" style="width: 25rem;"></div>
-    </div>
-    <div *ngFor="let dish of dishes">
-      <div class="d-flex justify-content-center">
-        <div class="mt-2">
-          <div class="btn btn-dark card text-bg-dark d-flex justify-content-center" routerLink="/detail/{{dish.id}}" style="width: 24rem; height: 2.5rem;">
-            <div class="row">
-              <div class="col-1">
-                <span class="badge text-bg-warning">Rating {{dish.rating}}</span>
-              </div>
-              <div class="col-9 text-center">
-                <a>
-                  <span class="badge">ID: {{dish.id}}</span>
-                  <span class="">{{dish.name}}</span>
-                </a>
-              </div>
-              <div class="col-2">
-                <button type="button" class="btn btn-danger btn-sm ms-4" title="delete dish" (click)="delete(dish)">x</button>
-              </div>
-            </div>
+  </div>
+  <div class="row justify-content-center mt-2" *ngFor="let dish of dishes">
+    <div class="col-auto">
+      <div class="btn btn-dark card text-bg-dark" routerLink="/detail/{{dish.id}}" style="width: 23rem; height: 2.5rem;">
+        <div class="row">
+          <div class="col-1">
+            <span class="badge text-bg-warning">Rating {{dish.rating}}</span>
+          </div>
+          <div class="col-9 text-center">
+            <a>
+              <span class="badge">ID: {{dish.id}}</span>
+              <span class="">{{dish.name}}</span>
+            </a>
+          </div>
+          <div class="col-2">
+            <span class="badge text-bg-danger ms-4" (click)="delete(dish)" title='Delete {{dish.name}}'>x</span>
           </div>
         </div>
       </div>

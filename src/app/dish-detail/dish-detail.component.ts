@@ -3,6 +3,7 @@ import { FormGroup, FormArray, FormControl, FormBuilder, Validators, AbstractCon
 import validator from "validator";
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { Router } from '@angular/router';
 
 import { Dish } from '../dish';
 import { DishService } from '../dish.service';
@@ -23,6 +24,7 @@ export class DishDetailComponent implements OnInit {
     private dishService: DishService,
     private location: Location,
     private fb: FormBuilder,
+    private router: Router,
   ) {}
 
   //FORM GROUP STUFF----------------------------------------------------
@@ -165,5 +167,20 @@ export class DishDetailComponent implements OnInit {
 
         return !validURL ? {realURL:true}: null;
     }
+  }
+
+  nextDish() {
+    let dishesLength = 0;
+    let id: number;
+    this.dishService.getDishesLength().subscribe((length: number) => {
+      dishesLength = length;
+      if(this.dish?.id == dishesLength) { this.router.navigate([`/detail/1`]).then(() => { window.location.reload(); }); return; }
+      if(this.dish) {
+        id = this.dish.id;
+        this.router.navigate([`/detail/${id + 1}`]).then(() => {
+          window.location.reload();
+        });
+      }
+    });
   }
 }
