@@ -1,16 +1,27 @@
-<div class="btn-group">
-  <button type="button" class="btn btn-dark btn-lg">My Dishes</button>
-  <button type="button" class="btn btn-success btn-lg" title="add dish" routerLink="/add-dish">Add</button>
-</div>
-<div class="m-3">
-  <ul class="list-group-flush">
-    <li class="list-group-item btn-group mt-2" *ngFor="let dish of dishes">
-      <a class="btn btn-dark" routerLink="/detail/{{dish.id}}">
-        <span class="badge text-bg-warning">Rating {{dish.rating}}</span>
-        <span class="badge">ID:{{dish.id}}</span>{{dish.name}}
-      </a>
-      <button type="button" class="btn btn-danger btn-md" title="delete dish"
-        (click)="delete(dish)">x</button>
-    </li>
-  </ul>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 text-center">
+      <h2 class="mt-2">Current Dishes</h2>
+    </div>
+  </div>
+  <div class="row justify-content-center mt-2" *ngFor="let dish of dishes">
+    <div class="col-auto">
+      <div class="btn btn-dark card text-bg-dark" routerLink="/detail/{{dish.id}}" style="width: 23rem; height: 2.5rem;">
+        <div class="row">
+          <div class="col-1">
+            <span class="badge text-bg-warning">Rating {{dish.rating}}</span>
+          </div>
+          <div class="col-9 text-center">
+            <a>
+              <span class="badge">ID: {{dish.id}}</span>
+              <span class="">{{dish.name}}</span>
+            </a>
+          </div>
+          <div class="col-2">
+            <span class="badge text-bg-danger ms-4" (click)="delete(dish)" title='Delete {{dish.name}}'>x</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

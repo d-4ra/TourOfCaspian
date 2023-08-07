@@ -1,41 +1,14 @@
-/* AppComponent's private CSS styles
-h1 {
-  margin-bottom: 0;
-}
-nav a {
-  padding: 1rem;
-  text-decoration: none;
-  margin-top: 10px;
-  display: inline-block;
-  background-color: #e8e8e8;
-  color: #3d3d3d;
-  border-radius: 4px;
+.bd-navbar::after {
+  position: absolute;
+  height: 70px;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  content: "";
+  background-image: linear-gradient(rgba(16, 84, 210, 0.8), rgba(16,84,210,0.6), rgba(34, 193, 214, 0.6));
 }
 
-nav a:hover {
-  color: white;
-  background-color: #42545C;
+.sBox1{
+  border-width: 3px;
+  border-color: rgb(0, 30, 255);
 }
-nav a:active {
-  background-color: black;
-}
-
-.my-a-tag {
-  background-color: #3f525c;
-  border-radius: 2px;
-  padding: 1rem;
-  font-size: 1.2rem;
-  text-decoration: none;
-  display: inline-block;
-  color: #fff;
-  text-align: center;
-  width: 100%;
-  min-width: 70px;
-  margin: .5rem auto;
-  box-sizing: border-box;
-
-
-  order: 0;
-  flex: 0 1 auto;
-  align-self: auto;
-} */

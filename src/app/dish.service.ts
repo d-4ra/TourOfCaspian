@@ -40,6 +40,14 @@ export class DishService {
       catchError(this.handleError<Dish>(`getDish id=${id}`))
     );
   }
+
+  getDishesLength(): Observable<number> {
+    return this.http.get<Dish[]>(this.dishesUrl).pipe(
+      map((dishes: Dish[]) => {
+        return dishes.length;
+      })
+    );
+  }
   /** Log a HeroService message with the MessageService */
   private log(message: string) {
     this.messageService.add(`DishService: ${message}`);
