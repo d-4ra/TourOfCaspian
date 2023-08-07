@@ -5,23 +5,20 @@
     </div>
     <div class="row justify-content-center g-2">
       <div class="col-auto" *ngFor="let dish of dishes">
-        <div class="card" style="width: 11rem;">
+        <div class="card" routerLink="/detail/{{dish.id}}" style="width: 11rem;">
           <img src="{{dish.img}}" class="card-img-top">
           <div class="card-body">
             <h5 class="card-title">{{dish.name}}</h5>
             <p class="card-text">{{dish.flavor}}</p>
-            <div class="text-center">
-              <span class="ratingText badge text-bg-dark mb-1">Rating: {{dish.rating}}</span>
-            </div>
-            <div class="text-center">
-              <a routerLink="/detail/{{dish.id}}" class="btn btn-primary btn-sm">Go to dish...</a>
+            <div class="text-center h5">
+              <span class="ratingText badge text-bg-dark">Rating: {{dish.rating}}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="col-12 text-center">
-      <label class="mt-4 mb-2 h5">Welcome to the Tour of Caspian, search, add and view several mysterious persian dishes. </label>
+      <label class="mt-4 mb-2 h5">Welcome to the Tour of Caspian, search, add and view several mysterious persian dishes.</label>
     </div> 
     <div class="col-12 text-center">
       <video class="img-thumbnail" muted autoplay loop>
